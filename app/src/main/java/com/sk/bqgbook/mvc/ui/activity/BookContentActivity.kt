@@ -24,6 +24,7 @@ import com.sk.bqgbook.mvc.model.Books
 import com.vicpin.krealmextensions.query
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_book_content.*
+import kotlinx.android.synthetic.main.activity_book_menu.*
 import org.jsoup.nodes.Document
 
 class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
@@ -160,6 +161,7 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
             if (mPosition+1 <= mBook[0].bookMenu!!.size - 1) {
                 preloadContent()
             }
+            content_sv.scrollTo(0,0)
             return
         }
         NetUtils.getDocument(CommonParams.base_url + mBook.get(0).bookMenu!!.get(mPosition)!!.link,
@@ -177,6 +179,7 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
                     if (mPosition+1 <= mBook[0].bookMenu!!.size - 1) {
                         preloadContent()
                     }
+                    content_sv.scrollTo(0,0)
                 }
             })
     }
