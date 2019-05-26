@@ -153,9 +153,13 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
 
     private fun setContent() {
         var bookMenu = mBook.get(0).bookMenu!!.get(mPosition)
+        mBook.get(0).bookLook = mPosition
+        mBook.get(0).save()
         content_title.text = mTitle + "-" + bookMenu!!.name
         if (!StringUtils.isEmpty(mBook.get(0).bookMenu!!.get(mPosition)!!.content)) {
             content_tv.text = Html.fromHtml(mBook.get(0).bookMenu!!.get(mPosition)!!.content).toString()
+            content_tv.textSize = fontsize_progress * 1f / 100 * 30 + 14.5f
+            font_size_sb.progress = fontsize_progress
             content_progress_layout.visibility = View.GONE
             updateMenu()
             if (mPosition+1 <= mBook[0].bookMenu!!.size - 1) {
