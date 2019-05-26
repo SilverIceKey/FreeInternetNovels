@@ -16,7 +16,7 @@ import com.blankj.utilcode.util.StringUtils
 import com.sk.bqgbook.R
 import com.sk.bqgbook.app.CommonParams
 import com.sk.bqgbook.app.Preference
-import com.sk.bqgbook.app.net.NetCallback
+import com.sk.bqgbook.app.net.NetResponseCallback
 import com.sk.bqgbook.app.net.NetUtils
 import com.sk.bqgbook.mvc.adapter.BookMenuAdapter
 import com.sk.bqgbook.mvc.model.BookMenu
@@ -24,7 +24,6 @@ import com.sk.bqgbook.mvc.model.Books
 import com.vicpin.krealmextensions.query
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_book_content.*
-import kotlinx.android.synthetic.main.activity_book_menu.*
 import org.jsoup.nodes.Document
 
 class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
@@ -152,6 +151,7 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
     }
 
     private fun setContent() {
+        content_progress_layout.visibility = View.VISIBLE
         var bookMenu = mBook.get(0).bookMenu!!.get(mPosition)
         mBook.get(0).bookLook = mPosition
         mBook.get(0).save()
@@ -162,14 +162,11 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
             font_size_sb.progress = fontsize_progress
             content_progress_layout.visibility = View.GONE
             updateMenu()
-            if (mPosition+1 <= mBook[0].bookMenu!!.size - 1) {
-                preloadContent()
-            }
             content_sv.scrollTo(0,0)
             return
         }
-        NetUtils.getDocument(CommonParams.base_url + mBook.get(0).bookMenu!!.get(mPosition)!!.link,
-            object : NetCallback {
+        NetUtils.getInstance()!!.getDocument(mBook.get(0).bookMenu!!.get(mPosition)!!.link,
+            object : NetResponseCallback {
                 override fun onSuccess(document: Document) {
                     var bookContent = document.select("#chaptercontent").html()
                     mBook.get(0).bookMenu!!.get(mPosition)!!.content = bookContent
@@ -180,9 +177,6 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
                     content_progress_layout.visibility = View.GONE
                     controller.visibility = View.GONE
                     updateMenu()
-                    if (mPosition+1 <= mBook[0].bookMenu!!.size - 1) {
-                        preloadContent()
-                    }
                     content_sv.scrollTo(0,0)
                 }
             })
@@ -192,8 +186,12 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
         if (!StringUtils.isEmpty(mBook.get(0).bookMenu!!.get(mPosition+1)!!.content)){
             return
         }
-        NetUtils.getDocument(CommonParams.base_url + mBook.get(0).bookMenu!!.get(mPosition+1)!!.link,
-            object : NetCallback {
+        println(CommonParams.base_url + mBook.get(0).bookMenu!!.get(mPosition)!!.link)
+        println(mBook.get(0).bookMenu!!.get(mPosition)!!.name)
+        println(CommonParams.base_url + mBook.get(0).bookMenu!!.get(mPosition+1)!!.link)
+        println(mBook.get(0).bookMenu!!.get(mPosition+1)!!.name)
+        NetUtils.getInstance()!!.getDocument(mBook.get(0).bookMenu!!.get(mPosition+1)!!.link,
+            object : NetResponseCallback {
                 override fun onSuccess(document: Document) {
                     var bookContent = document.select("#chaptercontent").html()
                     mBook.get(0).bookMenu!!.get(mPosition+1)!!.content = bookContent
@@ -230,7 +228,7 @@ class BookContentActivity : AppCompatActivity(),View.OnTouchListener {
     }
 
     fun updateMenu() {
-        NetUtils.getDocument(CommonParams.base_url + mBookCode + "/all.html", object : NetCallback {
+        NetUtils.getInstance()!!.getMenu(mBookCode, object : NetResponseCallback {
             override fun onSuccess(document: Document) {
                 var menus = document.select("#chapterlist p a[href]")
                 for ((index, menuItem) in menus.withIndex()) {

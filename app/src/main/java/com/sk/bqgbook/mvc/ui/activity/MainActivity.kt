@@ -14,7 +14,7 @@ import com.blankj.utilcode.util.StringUtils
 import com.just.agentweb.AgentWeb
 import com.sk.bqgbook.R
 import com.sk.bqgbook.app.CommonParams
-import com.sk.bqgbook.app.net.NetCallback
+import com.sk.bqgbook.app.net.NetResponseCallback
 import com.sk.bqgbook.app.net.NetUtils
 import com.sk.bqgbook.mvc.model.BookMenu
 import com.sk.bqgbook.mvc.model.Books
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
     }
 
     fun updateMenu(request: WebResourceRequest?) {
-        NetUtils.getDocument(CommonParams.base_url + mBookCode + "/all.html", object : NetCallback {
+        NetUtils.getInstance()!!.getMenu(mBookCode, object : NetResponseCallback {
             override fun onSuccess(document: Document) {
                 var books = Books().query { equalTo("book",mBookTitle) }
                 lateinit var book: Books

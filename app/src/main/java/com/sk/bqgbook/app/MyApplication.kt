@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.Utils
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.silvericekey.skutilslibrary.NetUtils.HttpUtils
 import com.sk.bqgbook.R
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -28,6 +29,7 @@ class MyApplication : Application() {
         super.onCreate()
         instance = this
         Utils.init(this)
+        HttpUtils.setBaseUrl(CommonParams.base_url)
         initRealm()
     }
 

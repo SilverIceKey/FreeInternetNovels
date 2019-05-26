@@ -32,13 +32,13 @@ dependencies {
     implementation rootProject.ext.dependencies["fresco"]
     implementation rootProject.ext.dependencies["otto"]
     annotationProcessor rootProject.ext.dependencies["auto_service"]
-    implementation rootProject.ext.dependencies['retrofit2']
-    implementation rootProject.ext.dependencies['rxandroid2_gson_convert']
-    implementation rootProject.ext.dependencies['rxjava2']
-    implementation rootProject.ext.dependencies['rxandroid2']
-    implementation rootProject.ext.dependencies['rxandroid2_gson_convert']
-    implementation rootProject.ext.dependencies['rxandroid2_scalars_convert']
-    implementation rootProject.ext.dependencies['rxandroid2_adapter_rxjava2']
+    api rootProject.ext.dependencies['retrofit2']
+    api rootProject.ext.dependencies['rxandroid2_gson_convert']
+    api rootProject.ext.dependencies['rxjava2']
+    api rootProject.ext.dependencies['rxandroid2']
+    api rootProject.ext.dependencies['rxandroid2_gson_convert']
+    api rootProject.ext.dependencies['rxandroid2_scalars_convert']
+    api rootProject.ext.dependencies['rxandroid2_adapter_rxjava2']
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

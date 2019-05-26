@@ -28,7 +28,11 @@ class HttpUtils {
         }
 
         fun setBaseUrl(baseUrl:String){
-            this.baseUrl = baseUrl
+            if (!baseUrl.endsWith("/")){
+                this.baseUrl = baseUrl+"/"
+            }else{
+                this.baseUrl = baseUrl
+            }
         }
     }
 

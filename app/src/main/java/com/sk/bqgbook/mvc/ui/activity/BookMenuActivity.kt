@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.BarUtils
 import com.sk.bqgbook.R
-import com.sk.bqgbook.app.net.NetCallback
+import com.sk.bqgbook.app.net.NetResponseCallback
 import com.sk.bqgbook.app.net.NetUtils
 import com.sk.bqgbook.mvc.adapter.BookMenuAdapter
 import com.sk.bqgbook.mvc.model.BookMenu
@@ -62,7 +62,7 @@ class BookMenuActivity : AppCompatActivity() {
             mAdapter.setNewData(books[0].bookMenu)
             progress_layout.visibility = View.GONE
         }
-        NetUtils.getDocument(mUrl, object : NetCallback {
+        NetUtils.getInstance()!!.getMenu(mBookCode, object : NetResponseCallback {
             override fun onSuccess(document: Document) {
                 lateinit var book: Books
                 if (books.size == 0) {
