@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.StringUtils
 import com.just.agentweb.AgentWeb
-import com.just.agentweb.IAgentWebSettings
 import com.sk.bqgbook.R
 import com.sk.bqgbook.app.CommonParams
 import com.sk.bqgbook.app.net.NetCallback
@@ -38,10 +37,12 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
 
     var webViewClient: WebViewClient = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-            agentWeb.webCreator.webView.settings.blockNetworkImage = true
+            //根据网站的路径得知只要后缀为all.html即为目录对url进行匹配
             if (request!!.url.toString().endsWith("all.html")) {
+                //首先查找数据库是否存在对应的小说的数据，如果存在查看观看进度是否存在，因为目录第0项是滚动到底部，刚好可以使用
                 var book = Books().query { equalTo("book",mBookTitle) }
                 if (book.size!=0){
+                    //如果观看不为0跳转阅读界面，否在跳转目录界面，因为只记录到章节，没有记录到具体行，对不起.jpg
                     if (book[0].bookLook!=0){
                         var intent = Intent(this@MainActivity, BookContentActivity::class.java)
                         intent.putExtra("title", mBookTitle)
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
                 }
                 return true
             }
+            //因为网站有最新章节的直接跳转，因此对最新章节的链接规则进行匹配，mBookCode的获取在onPageFinished方法中,这里对数据库进行查找，存在小说直接跳转阅读界面，否则根据目录链接规则先存储并更新小说的目录信息。
             if (request.url.toString().contains(CommonParams.base_url)&&!StringUtils.isEmpty(mBookCode)&&request.url.toString().contains(mBookCode)&&request.url.toString().contains(".html")) {
                 var book = Books().query { equalTo("book",mBookTitle) }
                 if (book.size!=0){
@@ -90,11 +92,15 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
+            //设置进行图片加载
             agentWeb.webCreator.webView.settings.blockNetworkImage = false
+            //根据链接规则获取书本在链接中的code
             if (!url!!.endsWith(CommonParams.base_url)&&!url.endsWith("html")){
                 mBookCode = url!!.replace(CommonParams.base_url,"").replace("/","")
             }
+            //js交互获取header标签的背景颜色并使用BarUtils设置顶部导航的颜色
             view!!.loadUrl("javascript:window.android.setBarColor($('header').css('background-color'));")
+            //js交互获取小说的标题
             view.loadUrl("javascript:window.android.setBookTitle($('span.title').html());")
         }
     }
@@ -109,7 +115,9 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
             .setWebChromeClient(webChromeClient)
             .setWebViewClient(webViewClient)
             .createAgentWeb().ready().go(CommonParams.base_url)
+        //用于延迟加载图片，更快显示页面
         agentWeb.webCreator.webView.settings.blockNetworkImage = true
+        //进行js注册
         agentWeb.jsInterfaceHolder.addJavaObject("android", WebViewInterface(this,this))
     }
 

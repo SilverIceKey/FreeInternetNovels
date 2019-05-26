@@ -24,7 +24,6 @@ import com.sk.bqgbook.mvc.model.Books
 import com.vicpin.krealmextensions.query
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_book_content.*
-import kotlinx.android.synthetic.main.book_menu_dialog.*
 import org.jsoup.nodes.Document
 
 class BookContentActivity : AppCompatActivity(),View.OnTouchListener {

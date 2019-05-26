@@ -72,10 +72,12 @@ class BookMenuActivity : AppCompatActivity() {
                 } else {
                     book = books.get(0)
                 }
+                //因为书名在<span class="title">的标签下，所以使用以下代码获得书名
                 var titles = document.select("span.title")
                 title_tv.text = titles.get(0).html()
                 mTitle = titles.get(0).html()
                 book.book = titles.get(0).html()
+                //以下也是根据网页规则在id为chapterlist的标签下的<p>标签的<a>中的链接和章节名称（表述不好见谅）
                 var menus = document.select("#chapterlist p a[href]")
                 for ((index,menuItem) in menus.withIndex()) {
                     if (index>=book.bookMenu!!.size){
