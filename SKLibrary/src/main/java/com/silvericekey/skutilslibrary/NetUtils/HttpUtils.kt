@@ -27,29 +27,29 @@ class HttpUtils {
             return httpUtils!!
         }
 
-        fun setBaseUrl(baseUrl:String){
-            if (!baseUrl.endsWith("/")){
-                this.baseUrl = baseUrl+"/"
-            }else{
+        fun setBaseUrl(baseUrl: String) {
+            if (!baseUrl.endsWith("/")) {
+                this.baseUrl = baseUrl + "/"
+            } else {
                 this.baseUrl = baseUrl
             }
         }
     }
 
     constructor() {
-        if (TextUtils.isEmpty(baseUrl)){
+        if (TextUtils.isEmpty(baseUrl)) {
             throw Exception("Please set base url first")
         }
         okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-            .readTimeout(10000L, TimeUnit.MILLISECONDS)
-            .build()
+                .connectTimeout(30000L, TimeUnit.MILLISECONDS)
+                .readTimeout(30000L, TimeUnit.MILLISECONDS)
+                .build()
         retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build()
     }
 
     fun <T> obtainClass(clz: Class<T>): T {
@@ -58,10 +58,16 @@ class HttpUtils {
 
     fun <T> execute(call: Call<T>, callback: NetCallback<T>) {
         ThreadUtils.runOnIOThread {
-            var response = call.execute()
-            if (callback != null) {
+            try {
+                val response = call.execute()
                 ThreadUtils.runOnUiThread { callback.onSuccess(response.body()) }
+
+            } catch (e: Exception) {
+                val response = call.execute()
+                ThreadUtils.runOnUiThread { callback.onSuccess(response.body()) }
+
             }
         }
     }
+
 }
