@@ -8,10 +8,7 @@ import com.sk.bqgbook.mvc.model.BookMenu
 import com.sk.bqgbook.mvc.ui.holder.BookMenuHolder
 
 class BookMenuAdapter : BaseQuickAdapter<BookMenu,BookMenuHolder> {
-
-    constructor() : super(R.layout.book_menu_item)
-
-    override fun convert(helper: BookMenuHolder?, item: BookMenu?) {
+    override fun convert(helper: BookMenuHolder, item: BookMenu?) {
         helper!!.mName.text = item!!.name
         if (StringUtils.isEmpty(item.content)){
             helper.mStatus.text = ""
@@ -19,5 +16,7 @@ class BookMenuAdapter : BaseQuickAdapter<BookMenu,BookMenuHolder> {
             helper.mStatus.text = "已缓存"
         }
     }
+
+    constructor() : super(R.layout.book_menu_item)
 
 }

@@ -47,11 +47,6 @@ class BookMenuActivity : AppCompatActivity() {
             intent.putExtra("bookcode", mBookCode)
             startActivity(intent)
         }
-        refreshlayout.setOnRefreshListener {
-            progress_layout.visibility = View.VISIBLE
-            setList()
-        }
-        refreshlayout.setNoMoreData(true)
         setList()
     }
 
@@ -89,7 +84,6 @@ class BookMenuActivity : AppCompatActivity() {
                 }
                 book.save()
                 mAdapter.setNewData(book.bookMenu)
-                refreshlayout.finishRefresh()
                 progress_layout.visibility = View.GONE
             }
         })

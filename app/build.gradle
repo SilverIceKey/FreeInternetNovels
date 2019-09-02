@@ -28,7 +28,7 @@ realm {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
@@ -40,8 +40,6 @@ dependencies {
     implementation rootProject.ext.dependencies['utilcode']
     implementation rootProject.ext.dependencies['agentweb']
     implementation rootProject.ext.dependencies['BaseRecyclerViewAdapterHelper']
-    implementation rootProject.ext.dependencies["SmartRefreshLayout"]
-    implementation rootProject.ext.dependencies["SmartRefreshHeader"]
     implementation rootProject.ext.dependencies["recyclerview-v7"]
     implementation rootProject.ext.dependencies["jsoup"]
     implementation rootProject.ext.dependencies["krealmextensions"]
