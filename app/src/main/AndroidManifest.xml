@@ -25,6 +25,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".mvc.ui.activity.BookContentActivity"></activity>
+        <activity android:name=".mvc.ui.activity.BookShelfActivity"></activity>
         <activity
             android:name=".mvc.ui.activity.BookMenuActivity"
             android:screenOrientation="portrait"></activity>

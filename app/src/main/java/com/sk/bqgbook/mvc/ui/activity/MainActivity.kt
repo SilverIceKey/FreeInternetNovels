@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
     var webViewClient: WebViewClient = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             //根据网站的路径得知只要后缀为all.html即为目录对url进行匹配
+            if (request!!.url.toString().endsWith("modules/article/bookcase.php")){
+                var intent = Intent(this@MainActivity,BookShelfActivity::class.java)
+                startActivity(intent)
+                return true
+            }
             if (request!!.url.toString().endsWith("all.html")) {
                 //首先查找数据库是否存在对应的小说的数据，如果存在查看观看进度是否存在，因为目录第0项是滚动到底部，刚好可以使用
                 var book = Books().query { equalTo("book",mBookTitle) }
@@ -102,6 +107,7 @@ class MainActivity : AppCompatActivity(), MainBookTitleCallback {
             view!!.loadUrl("javascript:window.android.setBarColor($('header').css('background-color'));")
             //js交互获取小说的标题
             view.loadUrl("javascript:window.android.setBookTitle($('span.title').html());")
+            view.loadUrl("javascript:document.getElementsByClassName('smallNav')[0].children[5].addEventListener('click',function(event){event.preventDefault();window.android.toBookShelf();});")
         }
     }
 

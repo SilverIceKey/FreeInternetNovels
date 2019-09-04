@@ -1,9 +1,11 @@
 package com.sk.bqgbook.mvc.ui.interfaces
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.webkit.JavascriptInterface
 import com.blankj.utilcode.util.BarUtils
+import com.sk.bqgbook.mvc.ui.activity.BookShelfActivity
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
@@ -50,4 +52,11 @@ class WebViewInterface {
             bookTitleCallback.setBookTitle(bookTitle)
         }
     }
+
+    @JavascriptInterface
+    fun toBookShelf(){
+        var intent = Intent(activity,BookShelfActivity::class.java)
+        activity.startActivity(intent)
+    }
+
 }
